@@ -46,6 +46,8 @@ $(function() {
 
 	var restartWorld = function() {
 		world = $.extend(true, {}, initialWorld);
+		tick = -1;
+		progStep = -1;
 		isAnimating = false;
 		displayPlay();
 		program =[MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
