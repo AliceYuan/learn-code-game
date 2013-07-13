@@ -87,8 +87,43 @@ $(function() {
 		return false;
 	};
 
+    var tick = -1;
+    var progStep = -1;
+
 	var updateWorld = function() {
 		if (isAnimating) {
+            tick = tick + 1;
+            if ((tick % 30) == 0) {
+                // start of a tick; evaluate next step in program
+                progStep = (progStep + 1) % program.length; // TODO(cbhl): don't hard-code this!
+                updateProgramButtons();
+                switch(program[progStep]) {
+                    case DO_NOTHING:
+                        world.player.speed.x = 0;
+                        world.player.speed.y = 0;
+                        break;
+                    case MOVE_RIGHT:
+                        world.player.speed.x = 50/60;
+                        world.player.speed.y = 0;
+                        break;
+                    case MOVE_UP:
+                        world.player.speed.x = 0;
+                        world.player.speed.y = -50/60;
+                        break;
+                    case MOVE_LEFT:
+                        world.player.speed.x = -50/60;
+                        world.player.speed.y = 0;
+                        break;
+                    case MOVE_DOWN:
+                        world.player.speed.x = 0;
+                        world.player.speed.y = 50/60;
+                        break;
+                    default:
+                        world.player.speed.x = 0;
+                        world.player.speed.y = 0;
+                        break;
+                }
+            }
 			if (!isCloseToObstacle(world.player, world.obstacle)){
 				world.player.x += world.player.speed.x;
 				world.player.y += world.player.speed.y;
@@ -154,6 +189,11 @@ $(function() {
         _.each(buttons, function(button, index) {
             button.removeClass(classes_str);
             button.addClass(classes[program[index]]);
+            if (progStep == index) {
+                button.addClass("active");
+            }else{
+                button.removeClass("active");
+            }
         });
     };
 
