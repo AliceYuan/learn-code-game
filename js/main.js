@@ -86,12 +86,13 @@ $(function() {
 
 	};
 
-	var isCloseToObstacle = function(player, obstacle) {
-		if (player.x > (obstacle.x - obstacle.r*2) && player.x < (obstacle.x + obstacle.r*2)) {
-			return true;
-		}
-		return false;
-	};
+    var isColliding = function(player, obstacle) {
+        var px = Math.floor(player.x / gridSize);
+        var py = Math.floor(player.y / gridSize);
+        var ox = Math.floor(obstacle.x / gridSize);
+        var oy = Math.floor(obstacle.y / gridSize);
+        return (px == ox) && (py == oy);
+    }
 
     var tick = -1;
     var progStep = -1;
@@ -130,10 +131,11 @@ $(function() {
                         break;
                 }
             }
-			if (!isCloseToObstacle(world.player, world.obstacle)){
-				world.player.x += world.player.speed.x;
-				world.player.y += world.player.speed.y;
+			if (isColliding(world.player, world.obstacle)){
+                playPauseButton();
 			}
+            world.player.x += world.player.speed.x;
+            world.player.y += world.player.speed.y;
 		}
 	};
 
