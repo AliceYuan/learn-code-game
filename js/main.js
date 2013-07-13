@@ -50,7 +50,6 @@ $(function() {
 		progStep = -1;
 		isAnimating = false;
 		displayPlay();
-		program =[MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
 		draw();
 		initProgramButtons();
 	};
@@ -216,7 +215,7 @@ $(function() {
 	var MOVE_LEFT = 3;
 	var MOVE_DOWN = 4;
 	var classes = ['icon-time', 'icon-arrow-right', 'icon-arrow-up', 'icon-arrow-left', 'icon-arrow-down'];
-	var program = null;
+	var program = [MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
 	var buttons = null;
 
 	var onProgramButtonClick = function(index) {
