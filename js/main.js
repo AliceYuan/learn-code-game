@@ -14,7 +14,7 @@ $(function() {
 		x: 40,
 		y: 350,
 		speed: {
-			x: 0,
+			x: 2,
 			y: 0
 		},
 		r: 25
@@ -75,7 +75,23 @@ $(function() {
 
 	draw();
 
+	var displayPause = function (){
+		$('#controls .btn').text(" Pause");
+		$('#controls .btn').removeClass("icon-play").addClass("icon-pause");
+	};
+
+	var displayPlay = function (){
+		$('#controls .btn').text(" Play");
+		$('#controls .btn').removeClass("icon-pause").addClass("icon-play");
+	};
+
 	var playPauseButton = function () {
+		if (isAnimating) {
+			displayPlay();
+		} else {
+			displayPause();
+
+		}
 		isAnimating = !isAnimating;
 	};
 
