@@ -47,6 +47,10 @@ $(function() {
 	var restartWorld = function() {
 		world = $.extend(true, {}, initialWorld);
 		isAnimating = false;
+        displayPause();
+        program =[MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
+    	draw();
+        initProgramButtons();
 	};
 
 	var drawPlayer = function(player) {
@@ -151,18 +155,16 @@ $(function() {
 		window.requestAnimationFrame(draw);
 	};
 
-	draw();
-
 	///// UI /////
 	
 	var displayPause = function (){
-		$('#controls .btn').text(" Pause");
-		$('#controls .btn').removeClass("icon-play").addClass("icon-pause");
+		$('#btn-play').text(" Pause");
+		$('#btn-play').removeClass("icon-play").addClass("icon-pause");
 	};
 
 	var displayPlay = function (){
-		$('#controls .btn').text(" Play");
-		$('#controls .btn').removeClass("icon-pause").addClass("icon-play");
+		$('#btn-play').text(" Play");
+		$('#btn-play').removeClass("icon-pause").addClass("icon-play");
 	};
 
 	var playPauseButton = function () {
@@ -170,7 +172,6 @@ $(function() {
 			displayPlay();
 		} else {
 			displayPause();
-
 		}
 		isAnimating = !isAnimating;
 	};
@@ -195,6 +196,7 @@ $(function() {
 	}
 
 
+	$('#btn-restart').click(restartWorld);
 	$('#btn-play').click(playPauseButton);
 
 	///// PROGRAM /////
@@ -204,7 +206,7 @@ $(function() {
 	var MOVE_LEFT = 3;
 	var MOVE_DOWN = 4;
 	var classes = ['icon-time', 'icon-arrow-right', 'icon-arrow-up', 'icon-arrow-left', 'icon-arrow-down'];
-	var program = [MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
+	var program = null;
 	var buttons = null;
 
 	var onProgramButtonClick = function(index) {
@@ -227,15 +229,16 @@ $(function() {
 	};
 
 	var initProgramButtons = function() {
+        $("#command").empty();
 		buttons = _.map(program, function(element, index) {
 			var button = $("<div>").addClass('btn btn-large cmd-btn');
 			button.click(_.bind(onProgramButtonClick, button, index));
 			return button;
 		});
 		$('#command').append(buttons);
-		updateProgramButtons();
+	    updateProgramButtons();
 	};
 
-	initProgramButtons();
+    restartWorld();
 
 });

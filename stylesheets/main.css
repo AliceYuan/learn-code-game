@@ -92,7 +92,7 @@ body {
 }
 /* line 32, ../sass/main.scss */
 #controls .btn-wrapper .btn {
-  display: block;
+  display: inline-block;
 }
 
 /* line 47, ../sass/main.scss */
