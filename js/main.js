@@ -1,9 +1,11 @@
 $(function() {
 
+    ///// WORLD /////
+
 	var w_canvas = document.getElementById("world");
 	var w_context = w_canvas.getContext("2d");
 	// w_context.fillRect(50, 25, 150, 100);
-
+  
 	var world = {
 		width: 1050,
 		height: 400
@@ -74,7 +76,9 @@ $(function() {
 
 	draw();
 
-	var displayPause = function (){
+    ///// UI /////
+	
+    var displayPause = function (){
 		$('#controls .btn').text(" Pause");
 		$('#controls .btn').removeClass("icon-play").addClass("icon-pause");
 	};
@@ -96,6 +100,14 @@ $(function() {
 
 	$('#btn-play').click(playPauseButton);
 
+    ///// PROGRAM /////
+    var DO_NOTHING = 0;
+    var MOVE_RIGHT = 1;
+    var program = [DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
+
+    var initProgramButtons = function() {
+    }
+
     var buttons = [
         $("<div>").addClass('btn btn-large cmd-right icon-arrow-right'),
         $("<div>").addClass('btn btn-large cmd-left icon-arrow-left'),
@@ -103,4 +115,5 @@ $(function() {
     ];
 
     $('#command').append(buttons);
+
 });
