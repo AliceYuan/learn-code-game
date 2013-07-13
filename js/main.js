@@ -47,10 +47,10 @@ $(function() {
 	var restartWorld = function() {
 		world = $.extend(true, {}, initialWorld);
 		isAnimating = false;
-        displayPause();
-        program =[MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
-    	draw();
-        initProgramButtons();
+		displayPause();
+		program =[MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
+		draw();
+		initProgramButtons();
 	};
 
 	var drawPlayer = function(player) {
@@ -90,56 +90,56 @@ $(function() {
 
 	};
 
-    var isColliding = function(player, obstacle) {
-        var px = Math.floor(player.x / gridSize);
-        var py = Math.floor(player.y / gridSize);
-        var ox = Math.floor(obstacle.x / gridSize);
-        var oy = Math.floor(obstacle.y / gridSize);
-        return (px == ox) && (py == oy);
-    }
+	var isColliding = function(player, obstacle) {
+		var px = Math.floor(player.x / gridSize);
+		var py = Math.floor(player.y / gridSize);
+		var ox = Math.floor(obstacle.x / gridSize);
+		var oy = Math.floor(obstacle.y / gridSize);
+		return (px == ox) && (py == oy);
+	}
 
-    var tick = -1;
-    var progStep = -1;
+	var tick = -1;
+	var progStep = -1;
 
 	var updateWorld = function() {
 		if (isAnimating) {
-            tick = tick + 1;
-            if ((tick % 60) == 0) {
-                // start of a tick; evaluate next step in program
-                progStep = (progStep + 1) % program.length; // TODO(cbhl): don't hard-code this!
-                updateProgramButtons();
-                switch(program[progStep]) {
-                    case DO_NOTHING:
-                        world.player.speed.x = 0;
-                        world.player.speed.y = 0;
-                        break;
-                    case MOVE_RIGHT:
-                        world.player.speed.x = gridSize/60;
-                        world.player.speed.y = 0;
-                        break;
-                    case MOVE_UP:
-                        world.player.speed.x = 0;
-                        world.player.speed.y = -gridSize/60;
-                        break;
-                    case MOVE_LEFT:
-                        world.player.speed.x = -gridSize/60;
-                        world.player.speed.y = 0;
-                        break;
-                    case MOVE_DOWN:
-                        world.player.speed.x = 0;
-                        world.player.speed.y = gridSize/60;
-                        break;
-                    default:
-                        world.player.speed.x = 0;
-                        world.player.speed.y = 0;
-                        break;
-                }
-            }
-			if (isColliding(world.player, world.obstacle)){
-                playPauseButton();
+			tick = tick + 1;
+			if ((tick % 60) == 0) {
+				// start of a tick; evaluate next step in program
+				progStep = (progStep + 1) % program.length; // TODO(cbhl): don't hard-code this!
+				updateProgramButtons();
+				switch(program[progStep]) {
+					case DO_NOTHING:
+						world.player.speed.x = 0;
+						world.player.speed.y = 0;
+						break;
+					case MOVE_RIGHT:
+						world.player.speed.x = gridSize/60;
+						world.player.speed.y = 0;
+						break;
+					case MOVE_UP:
+						world.player.speed.x = 0;
+						world.player.speed.y = -gridSize/60;
+						break;
+					case MOVE_LEFT:
+						world.player.speed.x = -gridSize/60;
+						world.player.speed.y = 0;
+						break;
+					case MOVE_DOWN:
+						world.player.speed.x = 0;
+						world.player.speed.y = gridSize/60;
+						break;
+					default:
+						world.player.speed.x = 0;
+						world.player.speed.y = 0;
+						break;
+				}
 			}
-            world.player.x += world.player.speed.x;
-            world.player.y += world.player.speed.y;
+			if (isColliding(world.player, world.obstacle)){
+				playPauseButton();
+			}
+			world.player.x += world.player.speed.x;
+			world.player.y += world.player.speed.y;
 		}
 	};
 
@@ -220,25 +220,25 @@ $(function() {
 		_.each(buttons, function(button, index) {
 			button.removeClass(classes_str);
 			button.addClass(classes[program[index]]);
-            if (progStep == index) {
-                button.addClass("active");
-            }else{
-                button.removeClass("active");
-            }
+			if (progStep == index) {
+				button.addClass("active");
+			}else{
+				button.removeClass("active");
+			}
 		});
 	};
 
 	var initProgramButtons = function() {
-        $("#command").empty();
+		$("#command").empty();
 		buttons = _.map(program, function(element, index) {
 			var button = $("<div>").addClass('btn btn-large cmd-btn');
 			button.click(_.bind(onProgramButtonClick, button, index));
 			return button;
 		});
 		$('#command').append(buttons);
-	    updateProgramButtons();
+		updateProgramButtons();
 	};
 
-    restartWorld();
+	restartWorld();
 
 });
