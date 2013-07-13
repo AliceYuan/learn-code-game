@@ -1,6 +1,6 @@
 $(function() {
 
-    ///// WORLD /////
+	///// WORLD /////
 
 	var w_canvas = document.getElementById("world");
 	var w_context = w_canvas.getContext("2d");
@@ -16,6 +16,10 @@ $(function() {
 		y: 350,
 		speed: {
 			x: 2,
+			y: 0
+		},
+		defaultSpeed: {
+			x: 0,
 			y: 0
 		},
 		r: 25
@@ -135,6 +139,7 @@ $(function() {
 		updateWorld();
 		drawEarth();
 		drawObstacle(1, world.obstacle);
+		drawGrid();
 		if (world.player.x < world.width)
 			drawPlayer(world.player);
 
@@ -144,9 +149,9 @@ $(function() {
 
 	draw();
 
-    ///// UI /////
+	///// UI /////
 	
-    var displayPause = function (){
+	var displayPause = function (){
 		$('#controls .btn').text(" Pause");
 		$('#controls .btn').removeClass("icon-play").addClass("icon-pause");
 	};
@@ -166,47 +171,63 @@ $(function() {
 		isAnimating = !isAnimating;
 	};
 
+
+	var gridSize = 75;
+	function drawGrid(){
+		var gridSize = 75;
+		for (var x = 0; x <= world.width; x += 75) {
+			w_context.moveTo(0.5 + x, 0);
+			w_context.lineTo(0.5 + x, world.height);
+		}
+
+
+		for (var y = 0; y <= world.height; y += 75) {
+			w_context.moveTo(0, y);
+			w_context.lineTo(world.width, 0.5 + y);
+		}
+
+		w_context.lineWidth = 1;
+		w_context.strokeStyle = "grey";
+		w_context.stroke();
+	}
+
+
 	$('#btn-play').click(playPauseButton);
 
-    ///// PROGRAM /////
-    var DO_NOTHING = 0;
-    var MOVE_RIGHT = 1;
-    var MOVE_UP = 2;
-    var MOVE_LEFT = 3;
-    var MOVE_DOWN = 4;
-    var classes = ['icon-empty', 'icon-arrow-right', 'icon-arrow-up', 'icon-arrow-left', 'icon-arrow-down'];
-    var program = [DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
-    var buttons = null;
+	///// PROGRAM /////
+	var DO_NOTHING = 0;
+	var MOVE_RIGHT = 1;
+	var MOVE_UP = 2;
+	var MOVE_LEFT = 3;
+	var MOVE_DOWN = 4;
+	var classes = ['icon-empty', 'icon-arrow-right', 'icon-arrow-up', 'icon-arrow-left', 'icon-arrow-down'];
+	var program = [DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
+	var buttons = null;
 
-    var onProgramButtonClick = function(index) {
-        program[index] = (program[index] + 1) % classes.length;
-        updateProgramButtons();
-    };
+	var onProgramButtonClick = function(index) {
+		program[index] = (program[index] + 1) % classes.length;
+		updateProgramButtons();
+	};
 
-    var updateProgramButtons = function() {
-        // TODO(cbhl): Replace with O(1) operation
-        classes_str = classes.join(" ");
-        _.each(buttons, function(button, index) {
-            button.removeClass(classes_str);
-            button.addClass(classes[program[index]]);
-            if (progStep == index) {
-                button.addClass("active");
-            }else{
-                button.removeClass("active");
-            }
-        });
-    };
+	var updateProgramButtons = function() {
+		// TODO(cbhl): Replace with O(1) operation
+		classes_str = classes.join(" ");
+		_.each(buttons, function(button, index) {
+			button.removeClass(classes_str);
+			button.addClass(classes[program[index]]);
+		});
+	};
 
-    var initProgramButtons = function() {
-        buttons = _.map(program, function(element, index) {
-            var button = $("<div>").addClass('btn btn-large cmd-btn');
-            button.click(_.bind(onProgramButtonClick, button, index));
-            return button;
-        });
-        $('#command').append(buttons);
-        updateProgramButtons();
-    };
+	var initProgramButtons = function() {
+		buttons = _.map(program, function(element, index) {
+			var button = $("<div>").addClass('btn btn-large cmd-btn');
+			button.click(_.bind(onProgramButtonClick, button, index));
+			return button;
+		});
+		$('#command').append(buttons);
+		updateProgramButtons();
+	};
 
-    initProgramButtons();
+	initProgramButtons();
 
 });
