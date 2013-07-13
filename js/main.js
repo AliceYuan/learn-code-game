@@ -120,8 +120,8 @@ $(function() {
 						world.player.speed.y = 0;
 						break;
 					case MOVE_UP:
-						world.player.speed.x = 0;
-						world.player.speed.y = -gridSize/60;
+						world.player.speed.x = 4*gridSize/60;
+						world.player.speed.y += -4*gridSize/60;
 						break;
 					case MOVE_LEFT:
 						world.player.speed.x = -gridSize/60;
@@ -129,7 +129,7 @@ $(function() {
 						break;
 					case MOVE_DOWN:
 						world.player.speed.x = 0;
-						world.player.speed.y = gridSize/60;
+						world.player.speed.y = 0;
 						break;
 					default:
 						world.player.speed.x = 0;
@@ -142,6 +142,14 @@ $(function() {
 			}
 			world.player.x += world.player.speed.x;
 			world.player.y += world.player.speed.y;
+
+			var groundHeight = (world.height - (gridSize/2));
+			if (world.player.y > groundHeight) {
+				world.player.y = groundHeight;
+				world.player.speed.y = 0;
+			}else if (world.player.y < groundHeight) {
+				world.player.speed.y += gridSize/360;
+			}
 		}
 	};
 
