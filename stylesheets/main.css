@@ -98,5 +98,7 @@ body {
 /* line 47, ../sass/main.scss */
 #command {
   height: 100px;
+  padding: 20px;
   background: white;
+  box-sizing: border-box;
 }

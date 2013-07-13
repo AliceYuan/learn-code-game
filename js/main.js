@@ -1,6 +1,5 @@
 $(function() {
 
-	// do stuff
 	var w_canvas = document.getElementById("world");
 	var w_context = w_canvas.getContext("2d");
 	// w_context.fillRect(50, 25, 150, 100);
@@ -97,6 +96,11 @@ $(function() {
 
 	$('#btn-play').click(playPauseButton);
 
+    var buttons = [
+        $("<div>").addClass('btn btn-large cmd-right icon-arrow-right'),
+        $("<div>").addClass('btn btn-large cmd-left icon-arrow-left'),
+        $("<div>").addClass('btn btn-large cmd-up icon-arrow-up')
+    ];
 
-
+    $('#command').append(buttons);
 });
