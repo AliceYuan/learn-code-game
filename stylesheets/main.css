@@ -66,3 +66,37 @@ a img {
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
+
+/* line 8, ../sass/main.scss */
+body {
+  font-size: 13px;
+}
+
+/* line 12, ../sass/main.scss */
+#main {
+  width: 1050px;
+  margin: auto;
+  overflow: hidden;
+}
+
+/* line 24, ../sass/main.scss */
+#controls {
+  height: 100px;
+  background: white;
+  padding: 30px;
+  box-sizing: border-box;
+}
+/* line 30, ../sass/main.scss */
+#controls .btn-wrapper {
+  margin: auto;
+}
+/* line 32, ../sass/main.scss */
+#controls .btn-wrapper .btn {
+  display: block;
+}
+
+/* line 47, ../sass/main.scss */
+#command {
+  height: 100px;
+  background: white;
+}
