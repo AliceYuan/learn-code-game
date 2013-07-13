@@ -201,8 +201,8 @@ $(function() {
 	var MOVE_UP = 2;
 	var MOVE_LEFT = 3;
 	var MOVE_DOWN = 4;
-	var classes = ['icon-empty', 'icon-arrow-right', 'icon-arrow-up', 'icon-arrow-left', 'icon-arrow-down'];
-	var program = [DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
+	var classes = ['icon-time', 'icon-arrow-right', 'icon-arrow-up', 'icon-arrow-left', 'icon-arrow-down'];
+	var program = [MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
 	var buttons = null;
 
 	var onProgramButtonClick = function(index) {
