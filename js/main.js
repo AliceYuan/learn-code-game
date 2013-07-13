@@ -103,17 +103,37 @@ $(function() {
     ///// PROGRAM /////
     var DO_NOTHING = 0;
     var MOVE_RIGHT = 1;
+    var MOVE_UP = 2;
+    var MOVE_LEFT = 3;
+    var MOVE_DOWN = 4;
+    var classes = ['icon-empty', 'icon-arrow-right', 'icon-arrow-up', 'icon-arrow-left', 'icon-arrow-down'];
     var program = [DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
+    var buttons = null;
+
+    var onProgramButtonClick = function(index) {
+        program[index] = (program[index] + 1) % classes.length;
+        updateProgramButtons();
+    };
+
+    var updateProgramButtons = function() {
+        // TODO(cbhl): Replace with O(1) operation
+        classes_str = classes.join(" ");
+        _.each(buttons, function(button, index) {
+            button.removeClass(classes_str);
+            button.addClass(classes[program[index]]);
+        });
+    };
 
     var initProgramButtons = function() {
-    }
+        buttons = _.map(program, function(element, index) {
+            var button = $("<div>").addClass('btn btn-large cmd-btn');
+            button.click(_.bind(onProgramButtonClick, button, index));
+            return button;
+        });
+        $('#command').append(buttons);
+        updateProgramButtons();
+    };
 
-    var buttons = [
-        $("<div>").addClass('btn btn-large cmd-right icon-arrow-right'),
-        $("<div>").addClass('btn btn-large cmd-left icon-arrow-left'),
-        $("<div>").addClass('btn btn-large cmd-up icon-arrow-up')
-    ];
-
-    $('#command').append(buttons);
+    initProgramButtons();
 
 });

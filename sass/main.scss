@@ -50,4 +50,15 @@ body{
 	background: white;
 	box-sizing: border-box;
 
+    .icon-empty:before {
+        content: " ";
+    }
+    .cmd-btn {
+        display: inline-block;
+        width: 56px;
+        height: 56px;
+        line-height: 32px;
+        background-image: none;
+        box-sizing: border-box;
+    }
 }
