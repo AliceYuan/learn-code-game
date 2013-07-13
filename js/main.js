@@ -47,7 +47,7 @@ $(function() {
 	var restartWorld = function() {
 		world = $.extend(true, {}, initialWorld);
 		isAnimating = false;
-		displayPause();
+		displayPlay();
 		program =[MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
 		draw();
 		initProgramButtons();
