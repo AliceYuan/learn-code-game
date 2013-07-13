@@ -8,12 +8,14 @@ $(function() {
   
 	var world = {
 		width: 1050,
-		height: 400
+		height: 375 
 	};
 
+	var gridSize = 75;
+
 	world['player'] = {
-		x: 40,
-		y: 350,
+		x: (gridSize/2),
+		y: world.height - (gridSize/2),
 		speed: {
 			x: 2,
 			y: 0
@@ -26,15 +28,15 @@ $(function() {
 	};
 
 	world['ring'] = {
-		x: 1000,
-		y: 350,
+		x: gridSize*13.5,
+		y: world.height - (gridSize/2),
 		r: 10
 	};
 
 
 	world['obstacle'] = {
-		x: 600,
-		y: 390,
+		x: gridSize*7.5,
+		y: world.height-10,
 		r: 20
 	};
 
@@ -97,7 +99,7 @@ $(function() {
 	var updateWorld = function() {
 		if (isAnimating) {
             tick = tick + 1;
-            if ((tick % 30) == 0) {
+            if ((tick % 60) == 0) {
                 // start of a tick; evaluate next step in program
                 progStep = (progStep + 1) % program.length; // TODO(cbhl): don't hard-code this!
                 updateProgramButtons();
@@ -107,20 +109,20 @@ $(function() {
                         world.player.speed.y = 0;
                         break;
                     case MOVE_RIGHT:
-                        world.player.speed.x = 50/60;
+                        world.player.speed.x = gridSize/60;
                         world.player.speed.y = 0;
                         break;
                     case MOVE_UP:
                         world.player.speed.x = 0;
-                        world.player.speed.y = -50/60;
+                        world.player.speed.y = -gridSize/60;
                         break;
                     case MOVE_LEFT:
-                        world.player.speed.x = -50/60;
+                        world.player.speed.x = -gridSize/60;
                         world.player.speed.y = 0;
                         break;
                     case MOVE_DOWN:
                         world.player.speed.x = 0;
-                        world.player.speed.y = 50/60;
+                        world.player.speed.y = gridSize/60;
                         break;
                     default:
                         world.player.speed.x = 0;
@@ -172,7 +174,6 @@ $(function() {
 	};
 
 
-	var gridSize = 75;
 	function drawGrid(){
 		var gridSize = 75;
 		for (var x = 0; x <= world.width; x += 75) {
@@ -215,6 +216,11 @@ $(function() {
 		_.each(buttons, function(button, index) {
 			button.removeClass(classes_str);
 			button.addClass(classes[program[index]]);
+            if (progStep == index) {
+                button.addClass("active");
+            }else{
+                button.removeClass("active");
+            }
 		});
 	};
 
