@@ -149,6 +149,10 @@ $(function() {
 			}else if (world.player.y < groundHeight) {
 				world.player.speed.y += gridSize/360;
 			}
+			if (world.player.x > (world.width+80)) {
+				playPauseButton();
+				restartWorld();
+			}
 		}
 	};
 
