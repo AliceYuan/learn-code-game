@@ -14,16 +14,18 @@ $(function() {
 	var gridSize = 75;
 	var groundHeight = (world.height - (gridSize/2));
 
+	var gravity = -0.2;
+
 	world['player'] = {
 		x: (gridSize/2),
 		y: groundHeight,
 		acceleration: {
 			x: 1,
-			y: -0.2
+			y: 3
 		},
 		initSpeed: {
 			x: 2,
-			y: 8
+			y: 6
 		},
 		curSpeed: {
 			x: 0,
@@ -163,7 +165,7 @@ $(function() {
 				playPauseButton();
 			}
 			if (world.player.y < groundHeight){
-				world.player.curSpeed.y += world.player.acceleration.y;
+				world.player.curSpeed.y += gravity;
 			}
 			if (world.player.curSpeed.y > world.player.maxSpeed.y){
 				world.player.curSpeed.y = world.player.maxSpeed.y;
