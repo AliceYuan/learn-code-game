@@ -116,7 +116,10 @@ $(function() {
 	var updateWorld = function() {
 		var addXSpeed = 0;
 		var addYSpeed = 0;
-		if (isAnimating) {
+		if (isColliding(world.player, world.obstacle)){
+			displayPlay();
+			isAnimating = false;
+		}else if (isAnimating) {
 			tick = tick + 1;
 			if ((tick % 60) === 0) {
 				// start of a tick; evaluate next step in program
