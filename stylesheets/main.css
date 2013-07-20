@@ -96,18 +96,18 @@ body {
 }
 
 /* line 47, ../sass/main.scss */
-#command {
+#palette, #command {
   height: 100px;
   padding: 20px;
   background: white;
   box-sizing: border-box;
 }
 /* line 53, ../sass/main.scss */
-#command .icon-empty:before {
+#palette .icon-empty:before, #command .icon-empty:before {
   content: " ";
 }
 /* line 56, ../sass/main.scss */
-#command .cmd-btn {
+#palette .cmd-btn, #command .cmd-btn {
   display: inline-block;
   width: 56px;
   height: 56px;
