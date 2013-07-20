@@ -8,21 +8,30 @@ $(function() {
   
 	var world = {
 		width: 1050,
-		height: 375 
+		height: 375
 	};
 
 	var gridSize = 75;
+	var groundHeight = (world.height - (gridSize/2));
 
 	world['player'] = {
 		x: (gridSize/2),
-		y: world.height - (gridSize/2),
-		speed: {
-			x: 2,
-			y: 0
+		y: groundHeight,
+		acceleration: {
+			x: 1,
+			y: -0.2
 		},
-		defaultSpeed: {
+		initSpeed: {
+			x: 2,
+			y: 8
+		},
+		curSpeed: {
 			x: 0,
 			y: 0
+		},
+		maxSpeed: {
+			x: 5,
+			y: 8
 		},
 		r: 25
 	};
@@ -97,57 +106,78 @@ $(function() {
 		var ox = Math.floor(obstacle.x / gridSize);
 		var oy = Math.floor(obstacle.y / gridSize);
 		return (px == ox) && (py == oy);
-	}
+	};
 
 	var tick = -1;
 	var progStep = -1;
-
+	var frameSpeed = gridSize/60;
 	var updateWorld = function() {
+		var addXSpeed = 0;
+		var addYSpeed = 0;
 		if (isAnimating) {
 			tick = tick + 1;
-			if ((tick % 60) == 0) {
+			if ((tick % 60) === 0) {
 				// start of a tick; evaluate next step in program
 				progStep = (progStep + 1) % program.length; // TODO(cbhl): don't hard-code this!
 				updateProgramButtons();
+				if (world.player.curSpeed.x === 0 ) {
+					addXSpeed = world.player.initSpeed.x;
+				} else {
+					addXSpeed = world.player.acceleration.x;
+				}
+				if (world.player.curSpeed.y === 0 ) {
+					addYSpeed = world.player.initSpeed.y;
+				} else {
+					addYSpeed = world.player.acceleration.y;
+				}
+
 				switch(program[progStep]) {
 					case DO_NOTHING:
-						world.player.speed.x = 0;
-						world.player.speed.y = 0;
 						break;
 					case MOVE_RIGHT:
-						world.player.speed.x = gridSize/60;
-						world.player.speed.y = 0;
+						if (world.player.curSpeed.x < world.player.maxSpeed.x){
+							world.player.curSpeed.x += addXSpeed;
+						}
 						break;
 					case MOVE_UP:
-						world.player.speed.x = 4*gridSize/60;
-						world.player.speed.y += -4*gridSize/60;
+						if (world.player.curSpeed.y < world.player.maxSpeed.y){
+							world.player.curSpeed.y += addYSpeed;
+						}
 						break;
 					case MOVE_LEFT:
-						world.player.speed.x = -gridSize/60;
-						world.player.speed.y = 0;
+						if (world.player.curSpeed.x < world.player.maxSpeed.x){
+							world.player.curSpeed.x -= addXSpeed;
+						}
 						break;
 					case MOVE_DOWN:
-						world.player.speed.x = 0;
-						world.player.speed.y = 0;
+						world.player.curSpeed.x = 0;
+						world.player.curSpeed.y = 0;
 						break;
 					default:
-						world.player.speed.x = 0;
-						world.player.speed.y = 0;
+						world.player.curSpeed.x = 0;
+						world.player.curSpeed.y = 0;
 						break;
 				}
 			}
 			if (isColliding(world.player, world.obstacle)){
 				playPauseButton();
 			}
-			world.player.x += world.player.speed.x;
-			world.player.y += world.player.speed.y;
+			if (world.player.y < groundHeight){
+				world.player.curSpeed.y += world.player.acceleration.y;
+			}
+			if (world.player.curSpeed.y > world.player.maxSpeed.y){
+				world.player.curSpeed.y = world.player.maxSpeed.y;
+			}
+			if (world.player.curSpeed.x > world.player.maxSpeed.x){
+				world.player.curSpeed.x = world.player.maxSpeed.x;
+			}
+			world.player.x += world.player.curSpeed.x / frameSpeed;
+			world.player.y -= world.player.curSpeed.y / frameSpeed;
 
-			var groundHeight = (world.height - (gridSize/2));
+			//collision detect with ground
 			if (world.player.y > groundHeight) {
 				world.player.y = groundHeight;
-				world.player.speed.y = 0;
-			}else if (world.player.y < groundHeight) {
-				world.player.speed.y += gridSize/360;
+				world.player.curSpeed.y = 0;
 			}
 		}
 	};
