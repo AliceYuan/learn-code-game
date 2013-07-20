@@ -103,11 +103,11 @@ $(function() {
 	};
 
 	var isColliding = function(player, obstacle) {
-		var px = Math.floor(player.x / gridSize);
-		var py = Math.floor(player.y / gridSize);
-		var ox = Math.floor(obstacle.x / gridSize);
-		var oy = Math.floor(obstacle.y / gridSize);
-		return (px == ox) && (py == oy);
+        var dx = player.x - obstacle.x;
+        var dy = player.y - obstacle.y;
+        var dd = (dx * dx) + (dy * dy);
+        var d_thresh = (player.r + obstacle.r);
+		return dd < (d_thresh * d_thresh);
 	};
 
 	var tick = -1;
@@ -266,6 +266,11 @@ $(function() {
 	var palette_buttons = null;
 	var buttons = null;
 
+	var onButtonClick = function(index) {
+		program[index] = (program[index] + 1) % classes.length;
+		updateProgramButtons();
+	};
+
 	var onDrop = function(index, event, ui) {
 		program[index] = ui.draggable.data("opcode") % classes.length;
 		updateProgramButtons();
@@ -301,6 +306,7 @@ $(function() {
 		$("#command").empty();
 		buttons = _.map(program, function(element, index) {
 			var button = $("<div>").addClass('btn btn-large cmd-btn');
+            button.click(_.bind(onButtonClick, button, index));
 			button.droppable({
 				drop: _.bind(onDrop, button, index)
 			});
