@@ -156,6 +156,16 @@ $(function() {
 		}
 	};
 
+	var startDrawLoop = function() {
+		var onDrawLoop = function() {
+			draw();
+
+			// TODO(cbhl): cross-browser compatibility
+			window.requestAnimationFrame(onDrawLoop);
+		};
+		onDrawLoop();
+	};
+
 	var draw = function() {
 		updateWorld();
 		drawEarth();
@@ -163,9 +173,6 @@ $(function() {
 		drawGrid();
 		if (world.player.x < world.width)
 			drawPlayer(world.player);
-
-		// TODO(cbhl): cross-browser compatibility
-		window.requestAnimationFrame(draw);
 	};
 
 	///// UI /////
@@ -268,5 +275,6 @@ $(function() {
 	};
 
 	restartWorld();
+	startDrawLoop();
 
 });
