@@ -103,11 +103,11 @@ $(function() {
 	};
 
 	var isColliding = function(player, obstacle) {
-		var px = Math.floor(player.x / gridSize);
-		var py = Math.floor(player.y / gridSize);
-		var ox = Math.floor(obstacle.x / gridSize);
-		var oy = Math.floor(obstacle.y / gridSize);
-		return (px == ox) && (py == oy);
+        var dx = player.x - obstacle.x;
+        var dy = player.y - obstacle.y;
+        var dd = (dx * dx) + (dy * dy);
+        var d_thresh = (player.r + obstacle.r);
+		return dd < (d_thresh * d_thresh);
 	};
 
 	var tick = -1;
