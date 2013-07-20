@@ -262,6 +262,11 @@ $(function() {
 	var palette_buttons = null;
 	var buttons = null;
 
+	var onButtonClick = function(index) {
+		program[index] = (program[index] + 1) % classes.length;
+		updateProgramButtons();
+	};
+
 	var onDrop = function(index, event, ui) {
 		program[index] = ui.draggable.data("opcode") % classes.length;
 		updateProgramButtons();
@@ -297,6 +302,7 @@ $(function() {
 		$("#command").empty();
 		buttons = _.map(program, function(element, index) {
 			var button = $("<div>").addClass('btn btn-large cmd-btn');
+            button.click(_.bind(onButtonClick, button, index));
 			button.droppable({
 				drop: _.bind(onDrop, button, index)
 			});
