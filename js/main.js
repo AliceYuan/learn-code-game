@@ -179,7 +179,21 @@ $(function() {
 				world.player.y = groundHeight;
 				world.player.curSpeed.y = 0;
 			}
+			if (world.player.x > (world.width+80)) {
+				playPauseButton();
+				restartWorld();
+			}
 		}
+	};
+
+	var startDrawLoop = function() {
+		var onDrawLoop = function() {
+			draw();
+
+			// TODO(cbhl): cross-browser compatibility
+			window.requestAnimationFrame(onDrawLoop);
+		};
+		onDrawLoop();
 	};
 
 	var draw = function() {
@@ -189,9 +203,6 @@ $(function() {
 		drawGrid();
 		if (world.player.x < world.width)
 			drawPlayer(world.player);
-
-		// TODO(cbhl): cross-browser compatibility
-		window.requestAnimationFrame(draw);
 	};
 
 	///// UI /////
@@ -246,10 +257,11 @@ $(function() {
 	var MOVE_DOWN = 4;
 	var classes = ['icon-time', 'icon-arrow-right', 'icon-arrow-up', 'icon-arrow-left', 'icon-arrow-down'];
 	var program = [MOVE_RIGHT, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING, DO_NOTHING];
+	var palette_buttons = null;
 	var buttons = null;
 
-	var onProgramButtonClick = function(index) {
-		program[index] = (program[index] + 1) % classes.length;
+	var onDrop = function(index, event, ui) {
+		program[index] = ui.draggable.data("opcode") % classes.length;
 		updateProgramButtons();
 	};
 
@@ -268,10 +280,24 @@ $(function() {
 	};
 
 	var initProgramButtons = function() {
+		$("#palette").empty();
+		palette_buttons = _.map(classes, function(element, index) {
+			var button = $("<div>").addClass('btn btn-large cmd-btn');
+			button.addClass(element);
+			button.data("opcode", index);
+			return button;
+		});
+		$("#palette").append(palette_buttons);
+		$("#palette .cmd-btn").draggable({
+			appendTo: "#main", /* TODO(cbhl): FIXME use a container around palette and command */
+			helper: "clone"
+		});
 		$("#command").empty();
 		buttons = _.map(program, function(element, index) {
 			var button = $("<div>").addClass('btn btn-large cmd-btn');
-			button.click(_.bind(onProgramButtonClick, button, index));
+			button.droppable({
+				drop: _.bind(onDrop, button, index)
+			});
 			return button;
 		});
 		$('#command').append(buttons);
@@ -279,5 +305,6 @@ $(function() {
 	};
 
 	restartWorld();
+	startDrawLoop();
 
 });
