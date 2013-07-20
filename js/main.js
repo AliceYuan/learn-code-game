@@ -137,7 +137,9 @@ $(function() {
 					case DO_NOTHING:
 						break;
 					case MOVE_RIGHT:
-						if (world.player.curSpeed.x < world.player.maxSpeed.x){
+						if (world.player.curSpeed.x < 0 ){
+							world.player.curSpeed.x += addXSpeed*3;
+						} else if (world.player.curSpeed.x < world.player.maxSpeed.x){
 							world.player.curSpeed.x += addXSpeed;
 						}
 						break;
@@ -147,7 +149,9 @@ $(function() {
 						}
 						break;
 					case MOVE_LEFT:
-						if (world.player.curSpeed.x < world.player.maxSpeed.x){
+						if (world.player.curSpeed.x > 0 ){
+							world.player.curSpeed.x -= addXSpeed*3;
+						} else if (world.player.curSpeed.x < world.player.maxSpeed.x){
 							world.player.curSpeed.x -= addXSpeed;
 						}
 						break;
